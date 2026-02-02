@@ -10,6 +10,7 @@ import json
 import logging
 
 from pipeline import TestPaperAnalysisPipeline
+from subject_router import analyze_subject
 
 # -------------------------------------------------
 # App setup
@@ -116,6 +117,7 @@ async def analyze(
     chat_id: str = Form(...),
     file: UploadFile = File(...),
     class_level: int | None = Form(None),
+    subject: str = Form("english"),
 ):
     chat = load_chat(chat_id)
     if not chat:
@@ -128,7 +130,8 @@ async def analyze(
         shutil.copyfileobj(file.file, f)
 
     try:
-        results = PIPELINE.analyze(
+        results = analyze_subject(
+            subject=subject,
             pdf_path=pdf_path,
             class_level=class_level or chat.get("class_level"),
             output_dir=str(RESULTS_DIR),

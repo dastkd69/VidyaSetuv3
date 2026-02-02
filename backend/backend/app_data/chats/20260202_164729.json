@@ -1,0 +1,360 @@
+{
+  "id": "20260202_164729",
+  "student_name": "sa",
+  "class_level": 6,
+  "created_at": "2026-02-02T16:47:29.196740",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Uploaded test paper: English Test Answer Sheet - Class 6 (1).pdf",
+      "timestamp": "2026-02-02T11:19:11.319Z",
+      "file_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis complete! Found 7 wrong answers.",
+      "timestamp": "2026-02-02T11:19:19.939Z",
+      "file_path": null
+    }
+  ],
+  "analyses": [
+    {
+      "timestamp": "2026-02-02T16:49:19.928193",
+      "file_name": "English Test Answer Sheet - Class 6 (1).pdf",
+      "results": {
+        "test_paper": "20260202_164729_11a246d6-f430-42c6-8742-085a9fe7b4e8_English Test Answer Sheet - Class 6 (1).pdf",
+        "analysis_date": "2026-02-02T16:49:19.920199",
+        "class_level": 6,
+        "total_wrong_answers": 7,
+        "total_recommendations": 9,
+        "wrong_answers": [
+          {
+            "page": 2,
+            "text": "Student wrote: \"should\"\n✓\n file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n2/7 file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n2/7 (a) You _______ respect your elders and teachers.\n Student wrote: \"should\"\n✓\n file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n2/7 Q5. Fill in the blanks with suitable modal verbs (can/should/must/may): (3 marks)\n Student wrote: \"should\"\n✓\n file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n2/7 Q5. Fill in the blanks with suitable modal verbs (can/should/must/may): (3 marks)\n (a) You _______ respect your elders and teachers.\n Student wrote: \"should\"\n✓\n file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n2/7 Student wrote: \"should\"\n✓ ✓ Student wrote: \"son\" Student answer: \"What a wonderful performance it was.\" clamatory sentence punctuation error clamatory sentence expressing strong clamation mark, not a full stop. Also needs capital W at Student answer: \"Do you know where the library is?\" ! Homophone confusion - vocabulary error Should be \"sun\" (the star in our solar system). \"Son\" means a male child, while \"sun\" is the celestial ! Exclamatory sentence punctuation error",
+            "detection_method": "color",
+            "confidence": 0.7,
+            "identified_topics": []
+          },
+          {
+            "page": 3,
+            "text": "Wrong! Compound word formation error\nCorrect answers: sunshine, toothbrush, rainbow, bedroom. Compound words are formed by joining two\nwords that make sense together. \"Sunbow\" is not a real word - the correct combination is \"sunshine\"\n(sun + shine) and \"rainbow\" (rain + bow).\n file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n3/7 file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n3/7 Student wrote: \"sunbow, toothroom, rainshine, bedrush\"\n Wrong! Compound word formation error\nCorrect answers: sunshine, toothbrush, rainbow, bedroom. Compound words are formed by joining two\nwords that make sense together. \"Sunbow\" is not a real word - the correct combination is \"sunshine\"\n(sun + shine) and \"rainbow\" (rain + bow). ✗ Q7. Form compound words by matching words from Column A with Column B: (2\nmarks)\n Wrong! Compound word formation error\nCorrect answers: sunshine, toothbrush, rainbow, bedroom. Compound words are formed by joining two\nwords that make sense together. \"Sunbow\" is not a real word - the correct combination is \"sunshine\"\n(sun + shine) and \"rainbow\" (rain + bow).\n ✗ Q7. Form compound words by matching words from Column A with Column B: (2\nmarks)\n Student wrote: \"sunbow, toothroom, rainshine, bedrush\"\n Wrong! Compound word formation error\nCorrect answers: sunshine, toothbrush, rainbow, bedroom. Compound words are formed by joining two\nwords that make sense together. \"Sunbow\" is not a real word - the correct combination is \"sunshine\"\n(sun + shine) and \"rainbow\" (rain + bow). Q7. Form compound words by matching words from Column A with Column B: (2\nmarks) Q7. Form compound words by matching words from Column A with Column B: (2\nmarks)\n Wrong! Neither...nor usage error - Grammar structure\nShould be \"nor\" - we use \"neither...nor\" as a pair for connecting two negative choices. \"Neither...or\" is\ngrammatically incorrect. The correct correlative conjunctions are \"neither...nor\" and \"either...or\". (a) I wanted to go to the park _______ it started raining heavily.\n (b) Neither Rahul _______ Priya likes to wake up early on holidays. (b) Neither Rahul _______ Priya likes to wake up early on holidays.\n ✓ Q6. Choose the correct conjunction (and/but/or/because) to complete the sentences: (2\nmarks)\n ✓ Q6. Choose the correct conjunction (and/but/or/because) to complete the sentences: (2\nmarks)\n (a) I wanted to go to the park _______ it started raining heavily. Q6. Choose the correct conjunction (and/but/or/because) to complete the sentences: (2\nmarks) presses obligation/compulsion (it's a rule that students have to follow). Student wrote: \"Can\" Student wrote: \"but\" Student wrote: \"sunbow, toothroom, rainshine, bedrush\" ! Modal verb usage error - compulsion vs advice ! Modal verb - permission vs ability ! Neither...nor usage error - Grammar structure . The correct correlative conjunctions are \"neither...nor\" and \"either...or\". ! Compound word formation error",
+            "detection_method": "color",
+            "confidence": 0.7,
+            "identified_topics": [
+              {
+                "_semantic_text": "sun shining yellow glory page 116 Vocabulary Colours and Rainbow",
+                "topic": "Vocabulary Colours and Rainbow",
+                "raw_topic": "sun shining yellow glory page 116",
+                "category": "Vocabulary Colours and Rainbow",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "115",
+                "confidence": 0.486
+              },
+              {
+                "_semantic_text": "colour of sky during sunrise and sunset page 117 Vocabulary Colours and Rainbow",
+                "topic": "Vocabulary Colours and Rainbow",
+                "raw_topic": "colour of sky during sunrise and sunset page 117",
+                "category": "Vocabulary Colours and Rainbow",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "118",
+                "confidence": 0.41
+              },
+              {
+                "_semantic_text": "monsoon words umbrella clouds page 114 Vocabulary Seasons and Weather",
+                "topic": "Vocabulary Seasons and Weather",
+                "raw_topic": "monsoon words umbrella clouds page 114",
+                "category": "Vocabulary Seasons and Weather",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "124",
+                "confidence": 0.409
+              }
+            ]
+          },
+          {
+            "page": 4,
+            "text": "Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n ✓\n ✗ Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n ✓\n Student wrote: \"The crow put some pebbles in the water.\"\n ✗ Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n Student wrote: \"The crow put some pebbles in the water.\" Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n Correct! Identified both the thirst and the accessibility problem.\n Student wrote: \"The crow put some pebbles in the water.\" Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n ✓ Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\" animals praised the crow for its intelligence and problem-solving skills.\n Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n Correct! Identified both the thirst and the accessibility problem. Slowly, the water level rose, and the crow could drink the water comfortably. All the\n animals praised the crow for its intelligence and problem-solving skills.\n Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\" Slowly, the water level rose, and the crow could drink the water comfortably. All the\n Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n ✓ for its beak to reach. The clever crow thought for a while and came up with a brilliant\n idea. It picked up small pebbles one by one and dropped them into the pitcher.\n Slowly, the water level rose, and the crow could drink the water comfortably. All the\n animals praised the crow for its intelligence and problem-solving skills.\n (b) How did the crow solve its problem?\n Student wrote: \"The crow was very thirsty and the water in the pitcher was too\nlow to reach.\"\n Correct! Identified both the thirst and the accessibility problem.\n Student wrote: \"The crow put some pebbles in the water.\"\n Wrong! Incomplete answer - Reading comprehension inference error\nBetter answer: \"The crow picked up small pebbles one by one and dropped them into the pitcher, which for its beak to reach. The clever crow thought for a while and came up with a brilliant crow was very thirsty and searched everywhere for water. Finally, it spotted a pitcher\n under a tree. The crow flew down and peeked inside, but the water level was too low\n for its beak to reach. The clever crow thought for a while and came up with a brilliant\n Slowly, the water level rose, and the crow could drink the water comfortably. All the (un-, dis-, mis-) to form opposites: (3 marks) \"un-\" makes the opposite. usage error - word formation to show something done wrongly or badly. Student wrote: \"The crow was very thirsty and the water in the pitcher was too ! Prefix usage error - word formation ! Incomplete answer - Reading comprehension inference error",
+            "detection_method": "color",
+            "confidence": 0.7,
+            "identified_topics": []
+          },
+          {
+            "page": 5,
+            "text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n5/7 Correct! Repetition of 's' sound at the beginning of words. ✓\n ✓ Wrong! Literary device identification error - Personification\nShould be \"Personification\" - stars are given human quality of dancing playfully. Personification is\nwhen non-human things are given human characteristics or actions. A simile would use \"like\" or \"as\"\nfor comparison (e.g., \"stars twinkled like diamonds\").\n ✓ (b) \"She sells sea shells on the sea shore.\"\n (c) \"Her smile was as bright as the sun.\"\n (d) Find the rhyming words in these lines:\n\"The cat sat on a mat,\nWearing a big red hat.\"\n Wrong! Literary device identification error - Personification\nShould be \"Personification\" - stars are given human quality of dancing playfully. Personification is\nwhen non-human things are given human characteristics or actions. A simile would use \"like\" or \"as\"\nfor comparison (e.g., \"stars twinkled like diamonds\").\n Correct! Repetition of 's' sound at the beginning of words. Wrong! Theme analysis and inference error\nBetter answer: \"We can learn that intelligence and creative thinking can help us solve difficult problems.\nWe should never give up and should use our brain to find solutions.\" The student missed the main moral\nabout problem-solving and persistence. Theme identification requires understanding the deeper\nmessage, not the literal action.\n ✗ (c) What lesson can we learn from this story? (Inference question)\n Wrong! Theme analysis and inference error\nBetter answer: \"We can learn that intelligence and creative thinking can help us solve difficult problems.\nWe should never give up and should use our brain to find solutions.\" The student missed the main moral\nabout problem-solving and persistence. Theme identification requires understanding the deeper\nmessage, not the literal action.\n ✗ (c) What lesson can we learn from this story? (Inference question)\n Student wrote: \"We should drink water when thirsty.\"\n Wrong! Theme analysis and inference error\nBetter answer: \"We can learn that intelligence and creative thinking can help us solve difficult problems.\nWe should never give up and should use our brain to find solutions.\" The student missed the main moral\nabout problem-solving and persistence. Theme identification requires understanding the deeper\nmessage, not the literal action. made the water level rise so it could drink.\" The answer should explain the complete process and WHY\nit worked (water level rising), not just what the crow did. This shows understanding of cause and effect.\n Wrong! Theme analysis and inference error\nBetter answer: \"We can learn that intelligence and creative thinking can help us solve difficult problems.\nWe should never give up and should use our brain to find solutions.\" The student missed the main moral\nabout problem-solving and persistence. Theme identification requires understanding the deeper\nmessage, not the literal action.\n ✗ (c) What lesson can we learn from this story? (Inference question)\n made the water level rise so it could drink.\" The answer should explain the complete process and WHY\nit worked (water level rising), not just what the crow did. This shows understanding of cause and effect.\n Wrong! Theme analysis and inference error\nBetter answer: \"We can learn that intelligence and creative thinking can help us solve difficult problems.\nWe should never give up and should use our brain to find solutions.\" The student missed the main moral\nabout problem-solving and persistence. Theme identification requires understanding the deeper\nmessage, not the literal action.\n ✗ t - Answer the following based on the poem extract: (5 marks) plain the complete process and WHY Student wrote: \"Simile\" Student wrote: \"Alliteration\" ! Theme analysis and inference error ! Literary device identification error - Personification ! Incomplete - Rhyme scheme identification error",
+            "detection_method": "color",
+            "confidence": 0.7,
+            "identified_topics": [
+              {
+                "_semantic_text": "making rhyming words for ten h-en p-en m-en d-en page 52 Vocabulary Numbers and Counting",
+                "topic": "Vocabulary Numbers and Counting",
+                "raw_topic": "making rhyming words for ten h-en p-en m-en d-en page 52",
+                "category": "Vocabulary Numbers and Counting",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "52-114",
+                "confidence": 0.367
+              },
+              {
+                "_semantic_text": "roar like lion meow like cat buzz like bee quack like duck page 64 Vocabulary Animals and Birds",
+                "topic": "Vocabulary Animals and Birds",
+                "raw_topic": "roar like lion meow like cat buzz like bee quack like duck page 64",
+                "category": "Vocabulary Animals and Birds",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "63-65",
+                "confidence": 0.355
+              },
+              {
+                "_semantic_text": "letter sounds s spoon swan seven page 32 Alphabet and Phonics",
+                "topic": "Alphabet and Phonics",
+                "raw_topic": "letter sounds s spoon swan seven page 32",
+                "category": "Alphabet and Phonics",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "38",
+                "confidence": 0.355
+              }
+            ]
+          },
+          {
+            "page": 6,
+            "text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n6/7 Multiple errors in paragraph writing:\n1. Sentence structure: Too many simple sentences (8-10 words each). Should use compound and complex\nsentences with conjunctions.\n2. Organization: Lacks clear beginning (introduction of topic), middle (elaboration with details), and end\n(conclusion).\n3. Vocabulary: Repetitive and basic. Should use descriptive adjectives and varied sentence starters.\n4. Grammar: \"We go to swimming\" should be \"we go swimming\" - incorrect preposition usage.\n5. Development: Ideas not connected logically. Needs better transitions and detailed descriptions.\n file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n6/7 Student wrote: \"The poet wishes to have a kite.\" sentences with conjunctions. ! Rhyme scheme analysis error ! Inference and theme understanding error s in paragraph writing:",
+            "detection_method": "color",
+            "confidence": 0.7,
+            "identified_topics": [
+              {
+                "_semantic_text": "I walk to school action page 16 Vocabulary Action Words and Verbs",
+                "topic": "Vocabulary Action Words and Verbs",
+                "raw_topic": "I walk to school action page 16",
+                "category": "Vocabulary Action Words and Verbs",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "57-118",
+                "confidence": 0.392
+              },
+              {
+                "_semantic_text": "writing family words Mother Sister Brother Father page 42 Vocabulary Family Members",
+                "topic": "Vocabulary Family Members",
+                "raw_topic": "writing family words Mother Sister Brother Father page 42",
+                "category": "Vocabulary Family Members",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "43",
+                "confidence": 0.359
+              },
+              {
+                "_semantic_text": "Vittal is bending action page 25 Vocabulary Action Words and Verbs",
+                "topic": "Vocabulary Action Words and Verbs",
+                "raw_topic": "Vittal is bending action page 25",
+                "category": "Vocabulary Action Words and Verbs",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "25",
+                "confidence": 0.351
+              }
+            ]
+          },
+          {
+            "page": 7,
+            "text": "Note: This test paper is designed to test the automated analysis system. All errors are\n clearly marked with ✗ symbols and detailed explanations for accurate detection and\n file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n7/7 file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n7/7 Total Marks Obtained: 17 / 40 Better answer should: Start with an engaging introduction about summer, develop the middle with detailed\nreasons why it's favorite (using sensory details, specific examples), and conclude with a strong closing\nstatement. Should include varied sentence structures and descriptive language. Total Marks Obtained: 17 / 40\n Teacher's Signature: _______________________\n Better answer should: Start with an engaging introduction about summer, develop the middle with detailed\nreasons why it's favorite (using sensory details, specific examples), and conclude with a strong closing\nstatement. Should include varied sentence structures and descriptive language. Simple Past Tense (verb forms for past time) Past Progressive Tense (was/were + verb+ing) Adjectives identification (describing words) Homophones (hear/here, son/sun) Exclamatory sentence punctuation Modal verbs - must (compulsion) vs should (advice) Modal verbs - may (permission) vs can (ability) Neither...nor correlative conjunctions Compound word formation Prefix usage (mis- vs dis-) Reading comprehension - inference and detail extraction Theme analysis and moral identification Literary device - Personification identification Rhyme scheme analysis Inferential comprehension in poetry Paragraph structure and organization Sentence variety and complexity in writing symbols and detailed explanations for accurate detection and amples), and conclude with a strong closing",
+            "detection_method": "color",
+            "confidence": 0.7,
+            "identified_topics": []
+          },
+          {
+            "page": 1,
+            "text": "Student wrote: \"is reading\" Student wrote: \"had finished\" Student answer: \"Adverb\" ! Simple Past Tense error ! Past Progressive Tense error ! Parts of Speech error - Adjective identification",
+            "detection_method": "ocr_pattern",
+            "confidence": 0.6,
+            "identified_topics": []
+          }
+        ],
+        "recommendations": [
+          {
+            "wrong_answer_text": "Wrong! Compound word formation error\nCorrect answers: sunshine, toothbrush, rainbow, bedroom. Compound words are formed by joining two\nwords that make sense together. \"Sunbow\" is not a real word - the",
+            "page": 3,
+            "detected_topic": "Vocabulary Colours and Rainbow",
+            "topic_confidence": 0.486,
+            "recommendations": [
+              {
+                "_semantic_text": "sun shining yellow glory page 116 Vocabulary Colours and Rainbow",
+                "topic": "Vocabulary Colours and Rainbow",
+                "raw_topic": "sun shining yellow glory page 116",
+                "category": "Vocabulary Colours and Rainbow",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "115",
+                "confidence": 0.486
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "Wrong! Compound word formation error\nCorrect answers: sunshine, toothbrush, rainbow, bedroom. Compound words are formed by joining two\nwords that make sense together. \"Sunbow\" is not a real word - the",
+            "page": 3,
+            "detected_topic": "Vocabulary Colours and Rainbow",
+            "topic_confidence": 0.41,
+            "recommendations": [
+              {
+                "_semantic_text": "colour of sky during sunrise and sunset page 117 Vocabulary Colours and Rainbow",
+                "topic": "Vocabulary Colours and Rainbow",
+                "raw_topic": "colour of sky during sunrise and sunset page 117",
+                "category": "Vocabulary Colours and Rainbow",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "118",
+                "confidence": 0.41
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "Wrong! Compound word formation error\nCorrect answers: sunshine, toothbrush, rainbow, bedroom. Compound words are formed by joining two\nwords that make sense together. \"Sunbow\" is not a real word - the",
+            "page": 3,
+            "detected_topic": "Vocabulary Seasons and Weather",
+            "topic_confidence": 0.409,
+            "recommendations": [
+              {
+                "_semantic_text": "monsoon words umbrella clouds page 114 Vocabulary Seasons and Weather",
+                "topic": "Vocabulary Seasons and Weather",
+                "raw_topic": "monsoon words umbrella clouds page 114",
+                "category": "Vocabulary Seasons and Weather",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "124",
+                "confidence": 0.409
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n5/7 Correct! Repetition of 's' sound at the beginning of words. ✓\n ✓ Wrong! Literary device identification error - Personification\nShould b",
+            "page": 5,
+            "detected_topic": "Vocabulary Numbers and Counting",
+            "topic_confidence": 0.367,
+            "recommendations": [
+              {
+                "_semantic_text": "making rhyming words for ten h-en p-en m-en d-en page 52 Vocabulary Numbers and Counting",
+                "topic": "Vocabulary Numbers and Counting",
+                "raw_topic": "making rhyming words for ten h-en p-en m-en d-en page 52",
+                "category": "Vocabulary Numbers and Counting",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "52-114",
+                "confidence": 0.367
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n5/7 Correct! Repetition of 's' sound at the beginning of words. ✓\n ✓ Wrong! Literary device identification error - Personification\nShould b",
+            "page": 5,
+            "detected_topic": "Vocabulary Animals and Birds",
+            "topic_confidence": 0.355,
+            "recommendations": [
+              {
+                "_semantic_text": "roar like lion meow like cat buzz like bee quack like duck page 64 Vocabulary Animals and Birds",
+                "topic": "Vocabulary Animals and Birds",
+                "raw_topic": "roar like lion meow like cat buzz like bee quack like duck page 64",
+                "category": "Vocabulary Animals and Birds",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "63-65",
+                "confidence": 0.355
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n5/7 Correct! Repetition of 's' sound at the beginning of words. ✓\n ✓ Wrong! Literary device identification error - Personification\nShould b",
+            "page": 5,
+            "detected_topic": "Alphabet and Phonics",
+            "topic_confidence": 0.355,
+            "recommendations": [
+              {
+                "_semantic_text": "letter sounds s spoon swan seven page 32 Alphabet and Phonics",
+                "topic": "Alphabet and Phonics",
+                "raw_topic": "letter sounds s spoon swan seven page 32",
+                "category": "Alphabet and Phonics",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "38",
+                "confidence": 0.355
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n6/7 Multiple errors in paragraph writing:\n1. Sentence structure: Too many simple sentences (8-10 words each). Should use compound and compl",
+            "page": 6,
+            "detected_topic": "Vocabulary Action Words and Verbs",
+            "topic_confidence": 0.392,
+            "recommendations": [
+              {
+                "_semantic_text": "I walk to school action page 16 Vocabulary Action Words and Verbs",
+                "topic": "Vocabulary Action Words and Verbs",
+                "raw_topic": "I walk to school action page 16",
+                "category": "Vocabulary Action Words and Verbs",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "57-118",
+                "confidence": 0.392
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n6/7 Multiple errors in paragraph writing:\n1. Sentence structure: Too many simple sentences (8-10 words each). Should use compound and compl",
+            "page": 6,
+            "detected_topic": "Vocabulary Family Members",
+            "topic_confidence": 0.359,
+            "recommendations": [
+              {
+                "_semantic_text": "writing family words Mother Sister Brother Father page 42 Vocabulary Family Members",
+                "topic": "Vocabulary Family Members",
+                "raw_topic": "writing family words Mother Sister Brother Father page 42",
+                "category": "Vocabulary Family Members",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "43",
+                "confidence": 0.359
+              }
+            ]
+          },
+          {
+            "wrong_answer_text": "file:///C:/Users/Tridib Das/Downloads/class6_test_paper.html\n6/7 Multiple errors in paragraph writing:\n1. Sentence structure: Too many simple sentences (8-10 words each). Should use compound and compl",
+            "page": 6,
+            "detected_topic": "Vocabulary Action Words and Verbs",
+            "topic_confidence": 0.351,
+            "recommendations": [
+              {
+                "_semantic_text": "Vittal is bending action page 25 Vocabulary Action Words and Verbs",
+                "topic": "Vocabulary Action Words and Verbs",
+                "raw_topic": "Vittal is bending action page 25",
+                "category": "Vocabulary Action Words and Verbs",
+                "class_level": 6,
+                "book_name": "english_class_6",
+                "chapters": "Reprint 2025-26",
+                "page_range": "25",
+                "confidence": 0.351
+              }
+            ]
+          }
+        ],
+        "processing_time": 5.69
+      }
+    }
+  ]
+}

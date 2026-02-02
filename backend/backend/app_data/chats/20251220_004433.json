@@ -1,0 +1,57 @@
+{
+  "id": "20251220_004433",
+  "student_name": "dodha",
+  "class_level": 6,
+  "created_at": "2025-12-20T00:44:33.000139",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T00:44:48.253777",
+      "file_path": "app_data\\uploads\\20251220_004433_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: Path ./model/all-MiniLM-L6-v2 not found",
+      "timestamp": "2025-12-20T00:44:48.300239",
+      "file_path": null
+    },
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T00:45:26.738095",
+      "file_path": "app_data\\uploads\\20251220_004433_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: 'NoneType' object has no attribute 'classify_texts'",
+      "timestamp": "2025-12-20T00:45:29.795821",
+      "file_path": null
+    },
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T00:47:22.040393",
+      "file_path": "app_data\\uploads\\20251220_004433_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: 'NoneType' object has no attribute 'classify_texts'",
+      "timestamp": "2025-12-20T00:47:24.984761",
+      "file_path": null
+    },
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T00:51:04.735829",
+      "file_path": "app_data\\uploads\\20251220_004433_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: 'NoneType' object has no attribute 'classify_texts'",
+      "timestamp": "2025-12-20T00:51:06.851181",
+      "file_path": null
+    }
+  ],
+  "analyses": []
+}

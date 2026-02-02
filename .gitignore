@@ -1,0 +1,7 @@
+*.zip
+*.pdf
+.env
+backend/app_data/
+backend/models/
+_pycache_/
+backend/backend/python/

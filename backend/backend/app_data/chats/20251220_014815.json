@@ -1,0 +1,57 @@
+{
+  "id": "20251220_014815",
+  "student_name": "kj",
+  "class_level": 6,
+  "created_at": "2025-12-20T01:48:15.119372",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T01:48:27.375228",
+      "file_path": "app_data\\uploads\\20251220_014815_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: 'charmap' codec can't encode character '\\u2705' in position 0: character maps to <undefined>",
+      "timestamp": "2025-12-20T01:48:34.274997",
+      "file_path": null
+    },
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T01:48:45.232935",
+      "file_path": "app_data\\uploads\\20251220_014815_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: 'charmap' codec can't encode character '\\u2705' in position 0: character maps to <undefined>",
+      "timestamp": "2025-12-20T01:48:50.720921",
+      "file_path": null
+    },
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T01:51:16.836562",
+      "file_path": "app_data\\uploads\\20251220_014815_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: 'charmap' codec can't encode character '\\u2705' in position 0: character maps to <undefined>",
+      "timestamp": "2025-12-20T01:51:22.282253",
+      "file_path": null
+    },
+    {
+      "role": "user",
+      "content": "Uploaded test paper: Class 6 English Test Paper.pdf",
+      "timestamp": "2025-12-20T01:52:01.202863",
+      "file_path": "app_data\\uploads\\20251220_014815_Class 6 English Test Paper.pdf"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis failed: 'charmap' codec can't encode character '\\u2705' in position 0: character maps to <undefined>",
+      "timestamp": "2025-12-20T01:52:06.660625",
+      "file_path": null
+    }
+  ],
+  "analyses": []
+}

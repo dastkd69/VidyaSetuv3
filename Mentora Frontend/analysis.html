@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentora — Analysis</title>
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/analysis.css">
+</head>
+<body>
+
+    <!-- Tutorial overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay"></div>
+    <div class="tutorial-tooltip" id="tutorialTooltip">
+        <div class="tutorial-arrow"></div>
+        <div class="tutorial-header">
+            <div class="tutorial-step-number" id="tutorialStepNumber"></div>
+            <button class="tutorial-close" onclick="endTutorial()">×</button>
+        </div>
+        <div class="tutorial-title" id="tutorialTitle"></div>
+        <div class="tutorial-description" id="tutorialDescription"></div>
+        <div class="tutorial-footer">
+            <div class="tutorial-nav">
+                <button class="tutorial-nav-btn" onclick="prevTutorialStep()" id="tutorialPrevBtn">Previous</button>
+                <button class="tutorial-nav-btn tutorial-next" onclick="nextTutorialStep()" id="tutorialNextBtn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== AI Tutor Modal ===== -->
+    <div class="modal-backdrop" id="tutorModal">
+        <div class="modal">
+
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <div class="modal-title-row">
+                        <div class="modal-ai-dot"></div>
+                        <div class="modal-title">AI Tutor</div>
+                    </div>
+                    <div class="modal-topic-label" id="modalTopicLabel">—</div>
+                </div>
+                <button class="modal-close" onclick="closeTutorModal()">×</button>
+            </div>
+
+            <div class="modal-body" id="tutorBody">
+                <!-- Conversation injected by JS -->
+            </div>
+
+            <div class="modal-footer">
+                <textarea
+                    class="modal-input"
+                    id="modalInput"
+                    rows="1"
+                    placeholder="Ask a question about this topic…"
+                ></textarea>
+                <button class="modal-send-btn" id="modalSendBtn" onclick="sendTutorMessage()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    Send
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <!-- ===== End Modal ===== -->
+
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a class="logo" href="index.html">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    Mentora
+                </a>
+            </div>
+
+            <div class="sidebar-content">
+                <button class="new-chat-btn" onclick="location.href='index.html'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    New Analysis
+                </button>
+
+                <div class="chat-history">
+                    <div class="chat-item active" onclick="switchChatItem(this, 'Priya Kumar')">
+                        <div class="chat-item-title">Priya Kumar — Math Test</div>
+                        <div class="chat-item-time">2 hours ago</div>
+                    </div>
+                    <div class="chat-item" onclick="switchChatItem(this, 'Rahul Sharma')">
+                        <div class="chat-item-title">Rahul Sharma — Physics Quiz</div>
+                        <div class="chat-item-time">1 day ago</div>
+                    </div>
+                    <div class="chat-item" onclick="switchChatItem(this, 'Ananya Patel')">
+                        <div class="chat-item-title">Ananya Patel — Chemistry</div>
+                        <div class="chat-item-time">2 days ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="help-btn" onclick="restartTutorial()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    Tutorial
+                </button>
+
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">P</div>
+                    <div id="currentUser">Priya Kumar</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="chat-container">
+                <div class="messages" id="messages">
+                    <!-- Rendered by analysis.js -->
+                </div>
+            </div>
+
+            <!-- input-area hidden via CSS (no global chat bar anymore) -->
+            <div class="input-area" id="inputArea"></div>
+        </div>
+
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script src="js/analysis.js"></script>
+</body>
+</html>

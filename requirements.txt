@@ -1,0 +1,16 @@
+numpy
+opencv-contrib-python-headless
+pandas
+Pillow
+PyMuPDF
+pytesseract
+fastapi
+sentence-transformers[onnx]
+sentencepiece
+streamlit
+llama-cpp-python
+faiss-cpu
+tqdm
+fastapi
+uvicorn[standard]
+python-multipart

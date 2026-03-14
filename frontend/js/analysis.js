@@ -8,49 +8,9 @@ const CHAPTER_PDFS = {
     'Triangle Similarity':     `${S3_BUCKET}/ncert/class10/mathematics/chapter06-triangles.pdf`,
 };
 
-// ── Demo data ────────────────────────────────────────────────────────
-const DEMO_CARDS = [
-    {
-        topic:       'Quadratic Equations',
-        confidence:  '87%',
-        wrongAnswer: 'Solve x² − 5x + 6 = 0. Answer: x = 2 (incorrect factorisation method)',
-        correction:  'The correct approach is to factorise as (x−2)(x−3) = 0, giving x = 2 or x = 3. Both roots must be found.',
-        book:        'NCERT Mathematics',
-        classNum:    '10',
-        chapter:     'Chapter 4 — Quadratic Equations',
-        pages:       '73–87',
-        startPage:   73,
-    },
-    {
-        topic:       'Arithmetic Progressions',
-        confidence:  '82%',
-        wrongAnswer: 'Find 10th term of AP: 2, 5, 8… Answer: 27 (calculation error)',
-        correction:  'Using aₙ = a + (n−1)d: a = 2, d = 3, n = 10. So a₁₀ = 2 + 9×3 = 29, not 27.',
-        book:        'NCERT Mathematics',
-        classNum:    '10',
-        chapter:     'Chapter 5 — Arithmetic Progressions',
-        pages:       '105–125',
-        startPage:   105,
-    },
-    {
-        topic:       'Triangle Similarity',
-        confidence:  '75%',
-        wrongAnswer: 'Prove triangles ABC and DEF are similar (wrong similarity criterion used)',
-        correction:  'The correct criterion here is AA (Angle-Angle). Two pairs of equal angles are sufficient to establish similarity.',
-        book:        'NCERT Mathematics',
-        classNum:    '10',
-        chapter:     'Chapter 6 — Triangles',
-        pages:       '128–152',
-        startPage:   128,
-    },
-];
-
 // ── Per-card state ───────────────────────────────────────────────────
 // cardStates[topic] = { history[], feedbackGiven, hadConversation }
 const cardStates = {};
-DEMO_CARDS.forEach(c => {
-    cardStates[c.topic] = { history: [], feedbackGiven: null, hadConversation: false };
-});
 
 let activeCardTopic = null;
 let ttsPlaying = false;
@@ -67,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTutorial([
         {
             title:       'Analysis Results 📊',
-            description: 'Mentora has identified mistakes and mapped each one to specific NCERT chapters and page numbers.',
+            description: 'Vidyasetu has identified mistakes and mapped each one to specific NCERT chapters and page numbers.',
             target:      '.result-summary',
             position:    'bottom'
         },
@@ -100,6 +60,78 @@ function renderAnalysis(ctx) {
     const fileName  = ctx.fileName || `${ctx.subject || 'mathematics'}_test.pdf`;
     const initials  = (ctx.studentName || 'S').charAt(0);
 
+    // Try to load real API results from sessionStorage
+    let cards = [];
+    let statsIssues = 0, statsTopics = 0, statsTime = '—';
+    let isDemo = false;
+
+    const raw = sessionStorage.getItem('vidyasetu_results');
+    if (raw) {
+        try {
+            const stored = JSON.parse(raw);
+            // Expose and log the raw stored results for debugging
+            window.__VIDYASETU_RESULTS__ = stored;
+            console.debug('VIDYASETU: stored results parsed', stored);
+            const r = stored.results?.analyses?.[0]?.results;
+            if (r && r.recommendations) {
+                isDemo = false;
+                statsIssues = r.total_wrong_answers ?? statsIssues;
+                statsTopics  = r.total_recommendations ?? statsTopics;
+                statsTime    = r.processing_time != null ? r.processing_time + 's' : statsTime;
+
+                // Map API recommendations to card structure (if provided)
+                if (Array.isArray(r.recommendations) && r.recommendations.length) {
+                    cards = r.recommendations.map(rec => {
+
+                        const meta =
+                            rec.recommendations && rec.recommendations.length
+                                ? rec.recommendations[0]
+                                : {};
+
+                        const pageRange = meta.page_range || "1";
+                        const startPage = parseInt(String(pageRange).split("-")[0]);
+
+                        return {
+                            topic: rec.detected_topic || meta.topic || "Unknown Topic",
+
+                            confidence: rec.topic_confidence
+                                ? (rec.topic_confidence * 100).toFixed(1) + "%"
+                                : "",
+
+                            wrongAnswer: rec.wrong_answer_text || "",
+
+                            correction: "",
+
+                            book: meta.book_name || "NCERT",
+
+                            classNum: meta.class_level || ctx.studentClass || "",
+
+                            chapter: meta.chapters || "",
+
+                            pages: meta.page_range || "",
+
+                            startPage: startPage || 1,
+                        };
+                    });
+                    // Keep cardStates in sync with real cards
+                    cards.forEach(c => {
+                        if (!cardStates[c.topic]) {
+                            cardStates[c.topic] = { history: [], feedbackGiven: null, hadConversation: false };
+                        }
+                    });
+                    statsIssues = r.total_wrong_answers ?? cards.length;
+                    statsTopics = r.total_recommendations ?? cards.length;
+                    statsTime = r.processing_time != null ? r.processing_time + 's' : statsTime;
+                }
+            }
+        } catch (e) {
+            console.warn('Could not parse stored results:', e);
+        }
+    }
+
+    // Expose the active card set for openTutorModal
+    ACTIVE_CARDS = cards;
+
     messages.innerHTML = `
         <div class="message user">
             <div class="message-header">
@@ -109,28 +141,56 @@ function renderAnalysis(ctx) {
             <div class="message-content">
                 <div class="file-attachment">
                     <span class="file-icon">📄</span>
-                    <span>${fileName} (2.4 MB)</span>
+                    <span>${fileName}${isDemo ? ' (demo)' : ''}</span>
                 </div>
+            </div>
+        </div>
+        
+        <div class="analysis-debug-toggle" style="margin-top:10px;">
+            <button id="toggleRawResultsBtn" style="font-size:13px;padding:6px 10px;border-radius:6px;border:1px solid var(--bg-elevated);background:var(--bg);cursor:pointer;">Show raw analysis JSON</button>
+            <div id="analysisDebugPreWrap" style="display:none;margin-top:8px;max-height:220px;overflow:auto;border-radius:6px;border:1px solid var(--bg-elevated);background:var(--bg-elevated);padding:8px;">
+                <pre id="analysisDebugPre" style="white-space:pre-wrap;font-size:12px;color:var(--text-muted);">(no data)</pre>
             </div>
         </div>
 
         <div class="message assistant">
             <div class="message-header">
-                <div class="message-avatar">M</div>
-                <div class="message-author">Mentora</div>
+                <div class="message-avatar">V</div>
+                <div class="message-author">Vidyasetu</div>
             </div>
             <div class="message-content">
                 <div class="result-summary">
                     <h3>✨ Analysis Complete</h3>
                     <div class="result-stats">
-                        <div class="stat"><div class="stat-value">5</div><div class="stat-label">Issues Found</div></div>
-                        <div class="stat"><div class="stat-value">12</div><div class="stat-label">Recommendations</div></div>
-                        <div class="stat"><div class="stat-value">3.2s</div><div class="stat-label">Processing Time</div></div>
+                        <div class="stat"><div class="stat-value">${statsIssues}</div><div class="stat-label">Issues Found</div></div>
+                        <div class="stat"><div class="stat-value">${statsTopics}</div><div class="stat-label">Recommendations</div></div>
+                        <div class="stat"><div class="stat-value">${statsTime}</div><div class="stat-label">Processing Time</div></div>
                     </div>
                 </div>
-                ${DEMO_CARDS.map(c => buildCardHTML(c)).join('')}
+                ${cards.length ? cards.map(c => buildCardHTML(c)).join('') : '<p style="color:var(--text-tertiary);font-size:14px;margin-top:12px">No specific recommendations were generated for this paper.</p>'}
             </div>
         </div>`;
+
+    // Attach toggle behaviour to debug panel and populate with stored JSON
+    try {
+        const toggleBtn = document.getElementById('toggleRawResultsBtn');
+        const preWrap = document.getElementById('analysisDebugPreWrap');
+        const pre = document.getElementById('analysisDebugPre');
+        if (toggleBtn && pre) {
+            toggleBtn.addEventListener('click', () => {
+                if (preWrap.style.display === 'none') {
+                    preWrap.style.display = 'block';
+                    toggleBtn.textContent = 'Hide raw analysis JSON';
+                    try { pre.textContent = JSON.stringify(window.__VIDYASETU_RESULTS__ || {message:'no stored results'}, null, 2); } catch (e) { pre.textContent = String(window.__VIDYASETU_RESULTS__); }
+                } else {
+                    preWrap.style.display = 'none';
+                    toggleBtn.textContent = 'Show raw analysis JSON';
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('Failed to initialize analysis debug UI:', e);
+    }
 }
 
 // ── Build recommendation card ─────────────────────────────────────────
@@ -191,7 +251,8 @@ function buildCardHTML(card) {
 }
 
 function slugify(str) {
-    return str.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    if (!str) return 'unknown';
+    return String(str).toLowerCase().replace(/[^a-z0-9]+/g, '-');
 }
 
 // ── S3 PDF ───────────────────────────────────────────────────────────
@@ -199,12 +260,16 @@ function openTextbookPDF(url) {
     window.open(url, '_blank', 'noopener,noreferrer');
 }
 
+// ── Active cards (set during renderAnalysis) ────────────
+let ACTIVE_CARDS = [];
+
 // ── Open modal for a specific topic ──────────────────────────────────
 function openTutorModal(topic) {
     activeCardTopic = topic;
 
-    const card  = DEMO_CARDS.find(c => c.topic === topic);
-    const state = cardStates[topic];
+    let card = ACTIVE_CARDS.find(c => c.topic === topic);
+    if (!card) card = { topic: topic || 'Unknown Topic', wrongAnswer: '', correction: '', book: 'NCERT', startPage: 1 };
+    const state = cardStates[topic] || (cardStates[topic] = { history: [], feedbackGiven: null, hadConversation: false });
     const ctx   = loadStudentContext() || {};
 
     document.getElementById('modalTopicLabel').textContent = topic;
@@ -309,7 +374,7 @@ function appendTypingIndicator() {
     div.id        = 'typingIndicator';
     div.className = 'tutor-message assistant';
     div.innerHTML = `
-        <div class="tutor-avatar">M</div>
+        <div class="tutor-avatar">V</div>
         <div class="tutor-bubble-wrap">
             <div class="tutor-bubble">
                 <div class="typing-indicator"><span></span><span></span><span></span></div>
@@ -330,8 +395,8 @@ async function sendTutorMessage() {
     const text    = input.value.trim();
     if (!text || !activeCardTopic) return;
 
-    const state = cardStates[activeCardTopic];
-    const card  = DEMO_CARDS.find(c => c.topic === activeCardTopic);
+    const state = cardStates[activeCardTopic] || (cardStates[activeCardTopic] = { history: [], feedbackGiven: null, hadConversation: false });
+    const card  = ACTIVE_CARDS.find(c => c.topic === activeCardTopic) || { topic: activeCardTopic || 'Unknown Topic', wrongAnswer: '', correction: '', book: 'NCERT', startPage: 1 };
     const ctx   = loadStudentContext() || {};
 
     input.value      = '';
@@ -345,7 +410,7 @@ async function sendTutorMessage() {
 
     try {
         const systemPrompt =
-            `You are Mentora's AI Tutor helping ${ctx.studentName || 'a student'} ` +
+            `You are Vidyasetu's AI Tutor helping ${ctx.studentName || 'a student'} ` +
             `in Class ${ctx.studentClass || '10'} with NCERT ${ctx.subject || 'Mathematics'}.\n\n` +
             `Current topic: "${activeCardTopic}".\n` +
             `Student's mistake: ${card?.wrongAnswer || ''}\n` +

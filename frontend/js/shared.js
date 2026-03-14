@@ -134,10 +134,10 @@ function switchChatItem(element, userName, targetPage) {
 
 // Store/restore student context via sessionStorage (safe to use outside artifacts)
 function saveStudentContext(data) {
-    sessionStorage.setItem('mentora_student', JSON.stringify(data));
+    sessionStorage.setItem('vidyasetu_student', JSON.stringify(data));
 }
 
 function loadStudentContext() {
-    const raw = sessionStorage.getItem('mentora_student');
+    const raw = sessionStorage.getItem('vidyasetu_student');
     return raw ? JSON.parse(raw) : null;
 }

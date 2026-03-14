@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidyasetu — Profile</title>
+
+    <!-- Shared design system -->
+    <link rel="stylesheet" href="css/shared.css">
+
+    <!-- Profile feature stylesheets -->
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/profile-hero.css">
+    <link rel="stylesheet" href="css/profile-badges.css">
+    <link rel="stylesheet" href="css/profile-topics.css">
+    <link rel="stylesheet" href="css/profile-details.css">
+    <link rel="stylesheet" href="css/profile-security.css">
+    <link rel="stylesheet" href="css/profile-modal.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     TOAST  (rendered by ProfileUI.showToast)
+════════════════════════════════════════════════════════════ -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     PASSWORD CHANGE MODAL
+════════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="pwModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="pwModalTitle">
+    <div class="modal-panel">
+        <div class="modal-title" id="pwModalTitle">Change Password</div>
+
+        <div class="modal-fields">
+            <!-- Current password -->
+            <div class="field-group">
+                <label class="field-label" for="pwCurrent">Current password</label>
+                <div class="pw-field-wrap">
+                    <input class="field-input" type="password" id="pwCurrent"
+                           autocomplete="current-password" placeholder="••••••••">
+                    <button class="pw-eye-btn" type="button" aria-label="Show password"
+                            onclick="ProfileSecurity.togglePw('pwCurrent', this)"></button>
+                </div>
+            </div>
+
+            <!-- New password + strength bar -->
+            <div class="field-group">
+                <label class="field-label" for="pwNew">New password</label>
+                <div class="pw-field-wrap">
+                    <input class="field-input" type="password" id="pwNew"
+                           autocomplete="new-password" placeholder="Minimum 8 characters"
+                           oninput="ProfileSecurity.checkStrength()">
+                    <button class="pw-eye-btn" type="button" aria-label="Show password"
+                            onclick="ProfileSecurity.togglePw('pwNew', this)"></button>
+                </div>
+                <div class="strength-bar-track">
+                    <div class="strength-bar-fill" id="pwStrFill"></div>
+                </div>
+                <div class="strength-label" id="pwStrLabel"></div>
+            </div>
+
+            <!-- Confirm password -->
+            <div class="field-group">
+                <label class="field-label" for="pwConfirm">Confirm new password</label>
+                <input class="field-input" type="password" id="pwConfirm"
+                       autocomplete="new-password" placeholder="••••••••">
+            </div>
+
+            <!-- Inline alert -->
+            <div class="inline-alert" id="pwModalAlert" role="alert"></div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="ProfileSecurity.closeModal()">Cancel</button>
+            <button class="btn-primary"   onclick="ProfileSecurity.savePassword()">Update password</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     APP SHELL
+════════════════════════════════════════════════════════════ -->
+<div class="app-container">
+
+    <!-- ── Sidebar ── -->
+    <nav class="sidebar" aria-label="Main navigation">
+        <div class="sidebar-header">
+            <a class="logo" href="index.html">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                Vidyasetu
+            </a>
+        </div>
+
+        <div class="sidebar-content">
+            <button class="new-chat-btn" onclick="location.href='index.html'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                New Analysis
+            </button>
+
+            <div class="chat-history">
+                <div class="chat-item" onclick="location.href='index.html'">
+                    <div class="chat-item-title">Priya Kumar — Math Test</div>
+                    <div class="chat-item-time">2 hours ago</div>
+                </div>
+                <div class="chat-item" onclick="location.href='analysis.html'">
+                    <div class="chat-item-title">Rahul Sharma — Physics Quiz</div>
+                    <div class="chat-item-time">1 day ago</div>
+                </div>
+                <div class="chat-item" onclick="location.href='analysis.html'">
+                    <div class="chat-item-title">Ananya Patel — Chemistry</div>
+                    <div class="chat-item-time">2 days ago</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-info" style="background:var(--accent-light);border:1px solid rgba(166,124,82,0.3);border-radius:var(--radius-md);cursor:default;">
+                <div class="user-avatar" id="userAvatar">P</div>
+                <div>
+                    <div id="currentUser" style="font-size:14px;font-weight:500;">Priya Kumar</div>
+                    <div style="font-size:11px;color:var(--accent-primary);">Profile</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Main content ── -->
+    <main class="main-content">
+        <div class="profile-container">
+            <div class="profile-inner">
+
+                <!-- Page heading -->
+                <div>
+                    <a class="page-back" href="index.html">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                        Back to home
+                    </a>
+                    <h1 class="page-heading">My Profile</h1>
+                    <p class="page-subheading">Manage your account and track your learning journey</p>
+                </div>
+
+
+                <!-- ══════════════════════════════════════
+                     XP HERO
+                ══════════════════════════════════════ -->
+                <div class="xp-hero">
+                    <!-- Top: rank info + total XP -->
+                    <div class="hero-top">
+                        <div class="hero-rank-side">
+                            <div class="hero-rank-eyebrow">Current rank</div>
+                            <div class="hero-rank-title" id="heroRankTitle">Scholar</div>
+                            <div class="hero-rank-sub"   id="heroRankSub">Level 4 · 340 XP to Expert</div>
+                        </div>
+                        <div class="hero-xp-side">
+                            <div class="hero-xp-number" id="heroXPNumber">0</div>
+                            <div class="hero-xp-label">Total XP</div>
+                        </div>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div class="xp-bar-section">
+                        <div class="xp-bar-labels">
+                            <span id="xpBarFrom">1500 XP</span>
+                            <span id="xpBarTo">2000 XP (Expert)</span>
+                        </div>
+                        <div class="xp-bar-track">
+                            <div class="xp-bar-fill" id="xpBarFill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick stats -->
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                                </svg>
+                            </div>
+                            <div class="hero-stat-value" id="statStreak">0</div>
+                            <div class="hero-stat-label">Day streak</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                </svg>
+                            </div>
+                            <div class="hero-stat-value" id="statPapers">0</div>
+                            <div class="hero-stat-label">Papers analysed</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                    <polyline points="17 6 23 6 23 12"/>
+                                </svg>
+                            </div>
+                            <div class="hero-stat-value" id="statImproved">0</div>
+                            <div class="hero-stat-label">Topics improved</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="8" r="6"/>
+                                    <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                                </svg>
+                            </div>
+                            <div class="hero-stat-value" id="statBadges">0</div>
+                            <div class="hero-stat-label">Badges earned</div>
+                        </div>
+                    </div>
+                </div><!-- /xp-hero -->
+
+
+                <!-- ══════════════════════════════════════
+                     ACHIEVEMENTS
+                ══════════════════════════════════════ -->
+                <section class="section-card" aria-labelledby="achievementsHeading">
+                    <div class="section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="6"/>
+                            <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                        </svg>
+                        <h2 class="section-title" id="achievementsHeading">Achievements</h2>
+                        <span class="section-meta" id="badgeCount">4 / 8 earned</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="badges-grid" id="badgesGrid"></div>
+                    </div>
+                </section>
+
+
+                <!-- ══════════════════════════════════════
+                     XP BREAKDOWN
+                ══════════════════════════════════════ -->
+                <section class="section-card" aria-labelledby="xpBreakdownHeading">
+                    <div class="section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                        <h2 class="section-title" id="xpBreakdownHeading">How you earned XP</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="xp-breakdown" id="xpBreakdown"></div>
+                    </div>
+                </section>
+
+
+                <!-- ══════════════════════════════════════
+                     TOPIC PERFORMANCE
+                ══════════════════════════════════════ -->
+                <section class="section-card" aria-labelledby="topicsHeading">
+                    <div class="section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6"  y1="20" x2="6"  y2="14"/>
+                        </svg>
+                        <h2 class="section-title" id="topicsHeading">Topic Performance</h2>
+                        <span class="section-meta">Weakest first</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="topics-list" id="topicsList"></div>
+                    </div>
+                </section>
+
+
+                <!-- ══════════════════════════════════════
+                     BASIC DETAILS
+                ══════════════════════════════════════ -->
+                <section class="section-card" aria-labelledby="detailsHeading">
+                    <div class="section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <h2 class="section-title" id="detailsHeading">Basic Details</h2>
+                    </div>
+                    <div class="section-body">
+
+                        <!-- Avatar block -->
+                        <div class="avatar-block">
+                            <div class="avatar-circle" id="avatarCircle">P</div>
+                            <div class="avatar-info">
+                                <div class="avatar-display-name">
+                                    <span id="avatarDisplayName">Priya Kumar</span>
+                                    <span class="rank-chip" id="avatarRankChip">Scholar L4</span>
+                                </div>
+                                <div class="avatar-email"  id="avatarEmail">priya@school.edu</div>
+                                <div class="avatar-joined" id="avatarJoined">Member since March 2025</div>
+                            </div>
+                        </div>
+
+                        <!-- Editable fields -->
+                        <div class="form-grid">
+                            <div class="field-group">
+                                <label class="field-label" for="editName">Full name</label>
+                                <input class="field-input" id="editName" type="text" autocomplete="name">
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="editEmail">Email address</label>
+                                <input class="field-input" id="editEmail" type="email" autocomplete="email">
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="editClass">Class / Grade</label>
+                                <input class="field-input" id="editClass" type="text" placeholder="e.g. Class 10">
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="editSchool">School / Institution</label>
+                                <input class="field-input" id="editSchool" type="text" placeholder="Your school name">
+                            </div>
+                        </div>
+
+                        <div class="inline-alert" id="basicAlert" role="alert"></div>
+
+                        <div class="save-row">
+                            <button class="btn-secondary" onclick="ProfileDetails.reset()">Reset</button>
+                            <button class="btn-primary"   onclick="ProfileDetails.save()">Save changes</button>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- ══════════════════════════════════════
+                     SECURITY
+                ══════════════════════════════════════ -->
+                <section class="section-card" aria-labelledby="securityHeading">
+                    <div class="section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <h2 class="section-title" id="securityHeading">Security</h2>
+                    </div>
+                    <div class="section-body section-body-flush">
+                        <div class="security-list">
+
+                            <div class="security-row">
+                                <div class="security-info">
+                                    <div class="security-label">Password</div>
+                                    <div class="security-desc">Last changed 14 days ago</div>
+                                </div>
+                                <div class="security-status" style="color:var(--text-secondary);">
+                                    <div class="status-dot ok"></div>Active
+                                </div>
+                                <button class="btn-sm" onclick="ProfileSecurity.openModal()">Change</button>
+                            </div>
+
+                            <div class="security-row">
+                                <div class="security-info">
+                                    <div class="security-label">Active sessions</div>
+                                    <div class="security-desc">Current session started today</div>
+                                </div>
+                                <div class="security-status" style="color:var(--success);">
+                                    <div class="status-dot ok"></div>1 active
+                                </div>
+                                <button class="btn-sm" onclick="ProfileSecurity.signOutAll()">Sign out all</button>
+                            </div>
+
+                            <div class="security-row">
+                                <div class="security-info">
+                                    <div class="security-label">Two-factor authentication</div>
+                                    <div class="security-desc">Add an extra layer of protection to your account</div>
+                                </div>
+                                <div class="security-status" style="color:#fb923c;">
+                                    <div class="status-dot warn"></div>Not enabled
+                                </div>
+                                <button class="btn-sm" onclick="ProfileUI.showToast('2FA setup coming soon', 'success')">Enable</button>
+                            </div>
+
+                            <div class="security-row">
+                                <div class="security-info">
+                                    <div class="security-label">Delete account</div>
+                                    <div class="security-desc">Permanently remove your account and all data — cannot be undone</div>
+                                </div>
+                                <button class="btn-danger" onclick="ProfileSecurity.deleteAccount()">Delete account</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <div style="height:24px;"></div>
+
+            </div><!-- /profile-inner -->
+        </div><!-- /profile-container -->
+    </main>
+
+</div><!-- /app-container -->
+
+
+<!-- ════════════════════════════════════════════════════════
+     SCRIPTS  (load order matters)
+════════════════════════════════════════════════════════════ -->
+<script src="js/shared.js"></script>
+<script src="js/auth-client.js"></script>
+
+<!-- Profile feature modules (icons first, then data, then features, then init) -->
+<script src="js/profile-icons.js"></script>
+<script src="js/profile-data.js"></script>
+<script src="js/profile-ui.js"></script>
+<script src="js/profile-hero.js"></script>
+<script src="js/profile-badges.js"></script>
+<script src="js/profile-topics.js"></script>
+<script src="js/profile-details.js"></script>
+<script src="js/profile-security.js"></script>
+<script src="js/profile-init.js"></script>
+
+</body>
+</html>

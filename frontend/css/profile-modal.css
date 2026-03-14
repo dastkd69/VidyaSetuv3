@@ -1,0 +1,82 @@
+/* =============================================================
+   profile-modal.css — password change modal
+   ============================================================= */
+
+.modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+
+.modal-panel {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 440px;
+    padding: 28px;
+    box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.5);
+    transform: translateY(18px);
+    transition: transform 0.26s cubic-bezier(0.16,1,0.3,1);
+}
+.modal-backdrop.open .modal-panel { transform: translateY(0); }
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 22px;
+}
+.modal-fields  { display: flex; flex-direction: column; gap: 16px; }
+.modal-footer  { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border-light); }
+
+/* Password toggle */
+.pw-field-wrap { position: relative; }
+.pw-field-wrap .field-input { padding-right: 42px; }
+
+.pw-eye-btn {
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s;
+    line-height: 0;
+}
+.pw-eye-btn:hover { color: var(--text-secondary); }
+
+/* Strength bar */
+.strength-bar-track {
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+.strength-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+.strength-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-align: right;
+    margin-top: 4px;
+    min-height: 14px;
+}

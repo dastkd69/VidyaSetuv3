@@ -1,5 +1,5 @@
 # backend/app.py
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, APIRouter, Body
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, APIRouter
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
@@ -176,23 +176,15 @@ class TutorChatRequest(BaseModel):
 
 @api.post("/chat/create")
 def create_chat(
-    student_name: str | None = Form(None),
-    studentName: str | None = Form(None),
+    student_name: str = Form(...),
     class_level: int | None = Form(None),
     subject: str = Form("english"),
 ):
-    # accept either snake_case or camelCase from the frontend
-    student = student_name or studentName
-    if not student:
-        raise HTTPException(status_code=400, detail="student_name required")
-
     chat_id = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     chat = {
         "id": chat_id,
-        "chatId": chat_id,
-        "student_name": student,
-        "studentName": student,
+        "student_name": student_name,
         "class_level": class_level,
         "created_at": datetime.now().isoformat(),
         "subject": subject,
@@ -206,22 +198,16 @@ def create_chat(
 
 @api.post("/analyze")
 async def analyze(
-    chat_id: str | None = Form(None),
-    chatId: str | None = Form(None),
+    chat_id: str = Form(...),
     file: UploadFile = File(...),
     class_level: int | None = Form(None),
     subject: str = Form("english"),
 ):
-    # accept either chat_id or chatId
-    cid = chat_id or chatId
-    if not cid:
-        return {"error": "Invalid chat_id"}
-
-    chat = load_chat(cid)
+    chat = load_chat(chat_id)
     if not chat:
         return {"error": "Invalid chat_id"}
 
-    temp_name = f"{cid}_{uuid.uuid4()}_{file.filename}"
+    temp_name = f"{chat_id}_{uuid.uuid4()}_{file.filename}"
     pdf_path = UPLOADS_DIR / temp_name
 
     with open(pdf_path, "wb") as f:
@@ -237,21 +223,113 @@ async def analyze(
     except Exception as e:
         return {"error": str(e)}
 
-    analysis_entry = {
+    # Persist raw results for debugging (capture original shape from analyze_subject)
+    try:
+        raw_fname = f"raw_{chat['id']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex}.json"
+        raw_path = RESULTS_DIR / raw_fname
+        raw_path.write_text(json.dumps(results, ensure_ascii=False, default=str), encoding="utf-8")
+        logger.info("Wrote raw analyze_subject output to %s", raw_path)
+    except Exception:
+        logger.exception("Failed to write raw results for chat %s", chat.get('id'))
+
+    # Handle different possible return types from analyze_subject and normalize
+    # If analyze_subject returned a path (string) to a saved results file, load it.
+    if isinstance(results, (str, Path)):
+        results_path = Path(results)
+        # If it's not absolute, resolve relative to RESULTS_DIR
+        if not results_path.exists():
+            results_path = RESULTS_DIR / results_path
+        try:
+            if results_path.exists():
+                results = json.loads(results_path.read_text(encoding="utf-8"))
+        except Exception:
+            # keep original results if file read fails
+            pass
+
+    # If pipeline returned a list of recommendations, wrap into dict
+    if isinstance(results, list):
+        results = {"recommendations": results}
+
+    # Normalize results.recommendations to a predictable shape consumed by the frontend
+    def _normalize_rec(rec: dict) -> dict | None:
+        if not rec or not isinstance(rec, dict):
+            return None
+        # Helper to pull a value from multiple possible keys, including one-level nested dicts
+        def pick(*keys):
+            for k in keys:
+                if k in rec and rec[k] not in (None, ""):
+                    return rec[k]
+            # look one level deep
+            for v in rec.values():
+                if isinstance(v, dict):
+                    for k in keys:
+                        if k in v and v[k] not in (None, ""):
+                            return v[k]
+            return None
+
+        topic = pick("topic", "subject", "title", "detected_topic") or "Unknown Topic"
+        wrong = pick("wrong_answer", "wrongAnswer", "wrong", "wrong_answer_text", "question", "question_text", "student_answer") or ""
+        correction = pick("correction", "correct_answer", "correction_text", "answer_explanation") or ""
+        confidence = rec.get("confidence")
+        book = pick("book", "book_name", "source", "textbook")
+        class_num = pick("class", "class_num", "classNum")
+        chapter = pick("chapter", "chapter_title", "chapter_name")
+        pages = pick("pages", "page_range", "pages_text", "page")
+        start_page = pick("start_page", "startPage", "page_start", "page")
+        pdf_url = pick("pdf_url", "pdfUrl", "source_url")
+
+        # If rec contains a nested list of recommendations with detailed metadata, prefer its first item
+        nested = None
+        if isinstance(rec.get("recommendations"), list) and rec.get("recommendations"):
+            nested = rec.get("recommendations")[0]
+        elif isinstance(rec.get("matches"), list) and rec.get("matches"):
+            nested = rec.get("matches")[0]
+        if nested and isinstance(nested, dict):
+            # override fields from nested where available
+            book = book or nested.get("book_name") or nested.get("book")
+            pages = pages or nested.get("page_range") or nested.get("page_range_text") or nested.get("page_range")
+            chapter = chapter or nested.get("chapters") or nested.get("chapter") or nested.get("chapter_title")
+            class_num = class_num or nested.get("class_level") or nested.get("class") or nested.get("class_num")
+            topic = topic if topic != "Unknown Topic" else (nested.get("topic") or nested.get("raw_topic") or topic)
+            start_page = start_page or nested.get("page_range") or nested.get("start_page") or nested.get("page")
+
+        # drop any entirely empty recommendation
+        if not (topic or wrong or correction):
+            return None
+
+        return {
+            "topic": topic,
+            "confidence": confidence,
+            "wrong_answer": wrong,
+            "correction": correction,
+            "book": book,
+            "class_num": class_num,
+            "chapter": chapter,
+            "pages": pages,
+            "start_page": start_page,
+            "pdf_url": pdf_url,
+        }
+
+    if isinstance(results, dict):
+        raw_recs = results.get("recommendations") or results.get("recommend") or []
+        if isinstance(raw_recs, list):
+            normalized = [r for r in (_normalize_rec(x) for x in raw_recs) if r]
+        else:
+            normalized = []
+
+        results["recommendations"] = normalized
+        # Ensure totals exist (fallback to computed counts)
+        results["total_wrong_answers"] = results.get("total_wrong_answers") or len(normalized)
+        results["total_recommendations"] = results.get("total_recommendations") or len(normalized)
+
+    chat["analyses"].append({
         "timestamp": datetime.now().isoformat(),
         "file_name": file.filename,
         "results": results,
-    }
-
-    chat.setdefault("analyses", []).append(analysis_entry)
-    # maintain camelCase aliases for frontend
-    chat.setdefault("chatId", chat.get("id"))
-    chat.setdefault("studentName", chat.get("student_name"))
+    })
 
     save_chat(chat)
-
-    # return updated chat so frontend can immediately access analyses/recommendations
-    return chat
+    return results
 
 
 @api.post("/tutor-chat")
@@ -311,29 +389,17 @@ def health():
 def list_chats():
     chats = []
     for f in CHATS_DIR.glob("*.json"):
-        c = json.loads(f.read_text(encoding="utf-8"))
-        if "chatId" not in c and "id" in c:
-            c["chatId"] = c["id"]
-        if "studentName" not in c and "student_name" in c:
-            c["studentName"] = c["student_name"]
-        chats.append(c)
+        chats.append(json.loads(f.read_text(encoding="utf-8")))
     return chats
 
 
 @api.post("/chat/message")
-def add_message(payload: dict = Body(...)):
-    # accept both camelCase and snake_case from frontend
-    cid = payload.get("chat_id") or payload.get("chatId")
-    message = payload.get("message")
-    if not cid or not message:
-        raise HTTPException(status_code=400, detail="chat_id and message required")
-
-    chat = load_chat(cid)
+def add_message(payload: ChatMessageRequest):
+    chat = load_chat(payload.chat_id)
     if not chat:
         raise HTTPException(status_code=404, detail="Invalid chat_id")
 
-    chat.setdefault("messages", []).append(message)
-    chat.setdefault("chatId", chat.get("id"))
+    chat.setdefault("messages", []).append(payload.message.model_dump())
     save_chat(chat)
     return chat
 
@@ -359,6 +425,29 @@ def delete_chat(chat_id: str):
             logger.warning("Failed to delete result: %s", file_path)
 
     return {"status": "deleted", "chat_id": chat_id}
+
+
+@api.post("/feedback")
+def feedback(payload: dict):
+    """Receive non-critical feedback from frontend and persist as JSONL."""
+    try:
+        topic = payload.get("topic")
+        vote = payload.get("vote")
+    except Exception:
+        return {"error": "Invalid payload"}
+
+    if not topic or not vote:
+        return {"error": "Missing topic or vote"}
+
+    FEEDBACK_FILE = DATA_DIR / "feedback.jsonl"
+    try:
+        with open(FEEDBACK_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+    except Exception as exc:
+        logger.exception("Failed to write feedback: %s", exc)
+        return {"error": "Failed to save feedback"}
+
+    return {"status": "ok"}
 
 
 app.include_router(api)

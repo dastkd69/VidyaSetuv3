@@ -209,4 +209,3 @@ class WrongAnswerDetector:
                 grouped[key]["text"] += " " + d.get("text", "")
 
         return list(grouped.values())
-

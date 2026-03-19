@@ -9,6 +9,7 @@ sentence-transformers
 sentencepiece
 streamlit
 torch
+transformers
 tqdm
 uvicorn
 fastapi

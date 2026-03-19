@@ -259,7 +259,6 @@ def tutor_chat(payload: TutorChatRequest):
 
     if BOOK_INDEX is None:
         return {"error": "Book index not loaded"}
-
     if TUTOR_LLM is None:
         return {"error": "Tutor model not loaded"}
 

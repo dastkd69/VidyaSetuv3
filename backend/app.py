@@ -361,3 +361,141 @@ def delete_chat(chat_id: str):
 
 
 app.include_router(api)
+
+# =================================================
+# AUTH MODULE (NON-INTRUSIVE ADDITION)
+# =================================================
+
+from fastapi import Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from passlib.context import CryptContext
+from jose import jwt
+from datetime import timedelta
+from pydantic import EmailStr
+
+# -------------------------
+# CONFIG
+# -------------------------
+AUTH_SECRET_KEY = "supersecretkey_change_this"
+AUTH_ALGORITHM = "HS256"
+AUTH_EXPIRE_MINUTES = 60 * 24
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+security = HTTPBearer()
+
+# -------------------------
+# SIMPLE STORAGE (swap later)
+# -------------------------
+AUTH_DB_PATH = DATA_DIR / "users.json"
+
+def _load_users():
+    if not AUTH_DB_PATH.exists():
+        return {}
+    return json.loads(AUTH_DB_PATH.read_text())
+
+def _save_users(users):
+    AUTH_DB_PATH.write_text(json.dumps(users, indent=2))
+
+# -------------------------
+# SCHEMAS
+# -------------------------
+class AuthSignup(BaseModel):
+    email: EmailStr
+    password: str
+
+class AuthLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class AuthToken(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+# -------------------------
+# UTILS
+# -------------------------
+def _hash(pw: str):
+    return pwd_context.hash(pw)
+
+def _verify(pw: str, hashed: str):
+    return pwd_context.verify(pw, hashed)
+
+def _create_token(data: dict):
+    payload = data.copy()
+    payload["exp"] = datetime.utcnow() + timedelta(minutes=AUTH_EXPIRE_MINUTES)
+    return jwt.encode(payload, AUTH_SECRET_KEY, algorithm=AUTH_ALGORITHM)
+
+def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, AUTH_SECRET_KEY, algorithms=[AUTH_ALGORITHM])
+        email = payload.get("sub")
+
+        users = _load_users()
+        if email not in users:
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+        return users[email]
+
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+# -------------------------
+# AUTH ROUTER (UNDER /api/auth)
+# -------------------------
+auth_router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+# -------------------------
+# SIGNUP
+# -------------------------
+@auth_router.post("/signup", response_model=AuthToken)
+def signup(payload: AuthSignup):
+    users = _load_users()
+
+    if payload.email in users:
+        raise HTTPException(status_code=400, detail="User exists")
+
+    users[payload.email] = {
+        "id": str(uuid.uuid4()),
+        "email": payload.email,
+        "password": _hash(payload.password),
+        "created_at": datetime.utcnow().isoformat()
+    }
+
+    _save_users(users)
+
+    token = _create_token({"sub": payload.email})
+    return {"access_token": token}
+
+# -------------------------
+# LOGIN
+# -------------------------
+@auth_router.post("/login", response_model=AuthToken)
+def login(payload: AuthLogin):
+    users = _load_users()
+    user = users.get(payload.email)
+
+    if not user or not _verify(payload.password, user["password"]):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    token = _create_token({"sub": payload.email})
+    return {"access_token": token}
+
+# -------------------------
+# GET CURRENT USER
+# -------------------------
+@auth_router.get("/me")
+def me(user=Depends(get_current_user)):
+    return user
+
+# -------------------------
+# OPTIONAL: AUTH HEALTH
+# -------------------------
+@auth_router.get("/health")
+def auth_health():
+    return {"status": "auth_ok"}
+
+# -------------------------
+# REGISTER ROUTER
+# -------------------------
+app.include_router(auth_router)

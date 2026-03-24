@@ -306,6 +306,24 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/debug/detections")
+def get_detection_debug():
+    """
+    Returns debug info and file paths for visualization.
+    """
+    try:
+        debug_dir = Path("debug_outputs")
+        dataset_dir = Path("dataset")
+
+        return {
+            "debug_images": [str(p) for p in debug_dir.glob("*.png")],
+            "dataset_images": [str(p) for p in (dataset_dir / "images").glob("*.jpg")],
+            "dataset_labels": [str(p) for p in (dataset_dir / "labels").glob("*.txt")],
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @api.get("/chat/list")
 def list_chats():
     chats = []
